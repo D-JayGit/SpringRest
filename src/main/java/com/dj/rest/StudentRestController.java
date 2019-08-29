@@ -18,30 +18,24 @@ import com.dj.entity.Student;
 @RestController
 @RequestMapping("api")
 public class StudentRestController {
-	
+
 	private List<Student> list;
-	
-	@ExceptionHandler
-	public ResponseEntity<StudentErrorResponse> handleException(StudentNotFoundException ex){
-		StudentErrorResponse error = new StudentErrorResponse();
-		error.setStatus(HttpStatus.NOT_FOUND.value());
-		error.setMessage(ex.getMessage());
-		return new ResponseEntity<StudentErrorResponse>(error, HttpStatus.NOT_FOUND);
-	}
-	
+
 	@PostConstruct
-	public void loadData(){
+	public void loadData() {
 		list = new ArrayList<Student>();
 		list.add(new Student("Dhananjay", "Sengraphwar"));
 		list.add(new Student("Pooja", "Sawant"));
 	}
+
 	@GetMapping("/students")
-	public List<Student> getStudentList(){
+	public List<Student> getStudentList() {
 		return list;
 	}
+
 	@GetMapping("/students/{studentId}")
-	public Student getStudent(@PathVariable int studentId){
-		if(list.size() < studentId || studentId < 0){
+	public Student getStudent(@PathVariable int studentId) {
+		if (list.size() < studentId || studentId < 0) {
 			throw new StudentNotFoundException("Student id is not present :" + studentId);
 		}
 		return list.get(studentId);
